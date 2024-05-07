@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 import java.io.Serializable;
 
 @Entity
@@ -18,8 +20,16 @@ public class Tax implements Serializable {
     private Double amount;
     private String type;
     private boolean paid;
+    @ManyToOne
+    private User user;
 	public Long getId() {
 		return id;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 	public void setId(Long id) {
 		this.id = id;

@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import app.spring.tax.models.Tax;
+import app.spring.tax.models.User;
 import app.spring.tax.repository.TaxRepository;
 
 import java.util.List;
@@ -21,6 +22,10 @@ public class TaxService {
 
     public Optional<Tax> getTaxById(Long id) {
         return taxRepository.findById(id);
+    }
+    
+    public List<Tax> getTaxesByUser(Optional<User> user) {
+        return taxRepository.findByUser(user);
     }
 
     public Tax createTax(Tax tax) {

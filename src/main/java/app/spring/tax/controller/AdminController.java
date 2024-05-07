@@ -4,8 +4,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import app.spring.tax.models.Tax;
+import app.spring.tax.models.User;
 import app.spring.tax.repository.TaxRepository;
+import app.spring.tax.services.NotificationService;
 import app.spring.tax.services.TaxService;
+import app.spring.tax.services.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +18,12 @@ import java.util.Optional;
 public class AdminController {
 	@Autowired
     private TaxService taxService;
+	
+	@Autowired
+    private UserService userService;
+	
+	 @Autowired
+	    private NotificationService notificationService;
 
     @GetMapping("/taxes")
     public ResponseEntity<List<Tax>> getAllTaxes() {
@@ -43,6 +52,24 @@ public class AdminController {
             existingTax.setType(taxDetails.getType());
             Tax updatedTax = taxService.updateTax(existingTax);
             return ResponseEntity.ok(updatedTax);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    
+    @PostMapping("/assignTax/{userId}")
+    public ResponseEntity<Tax> assignTaxToUser(@PathVariable Long userId, @RequestBody Tax tax) {
+        Optional<User> optionalUser = userService.getUserById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            tax.setUser(user);
+            Tax assignedTax = taxService.createTax(tax);
+            if (user != null) {
+                String message = "You have a new tax assigned.";
+                notificationService.sendNotification(user, message);
+            }
+            return ResponseEntity.ok(assignedTax);
         } else {
             return ResponseEntity.notFound().build();
         }
