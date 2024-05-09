@@ -47,4 +47,12 @@ public class UserService implements UserDetailsService {
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
     }
+    
+    public String getUserRole(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            return null;
+        }
+        return user.getRole(); 
+    }
 }

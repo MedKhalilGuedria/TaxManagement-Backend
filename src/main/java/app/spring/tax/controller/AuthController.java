@@ -1,5 +1,6 @@
 package app.spring.tax.controller;
 
+import app.spring.tax.dto.AuthResponse;
 import app.spring.tax.config.JwtUtil;
 import app.spring.tax.models.User;
 import app.spring.tax.services.UserService;
@@ -37,7 +38,10 @@ public class AuthController {
 
         final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(token);
+        final String role = userService.getUserRole(authenticationRequest.getUsername());
+        System.out.println(role);// Fetch user role
+        AuthResponse response = new AuthResponse(token, role);
+        return ResponseEntity.ok(response);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
