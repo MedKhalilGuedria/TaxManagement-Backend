@@ -22,6 +22,10 @@ public class Tax implements Serializable {
     private boolean paid;
     @ManyToOne
     private User user;
+	public Tax() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public Long getId() {
 		return id;
 	}
