@@ -37,11 +37,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-            .antMatchers("/auth/authenticate", "/auth/register").permitAll()
-            .antMatchers(HttpMethod.GET, "/user/**").hasRole("USER")
-            .antMatchers(HttpMethod.POST, "/user/**").hasRole("ADMIN")
-            .antMatchers(HttpMethod.PUT, "/user/**").hasRole("USER")
-            .antMatchers(HttpMethod.DELETE, "/admin/**").hasRole("ADMIN")
+            .antMatchers("/app/authenticate", "app/register").permitAll()
+            .antMatchers(HttpMethod.GET, "/app/**").hasRole("USER")
+            .antMatchers(HttpMethod.POST, "/app/**").hasRole("ADMIN")
+            .antMatchers(HttpMethod.PUT, "/app/**").hasRole("USER")
+            .antMatchers(HttpMethod.DELETE, "/app/**").hasRole("ADMIN")
             .anyRequest().authenticated()
             .and().sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
